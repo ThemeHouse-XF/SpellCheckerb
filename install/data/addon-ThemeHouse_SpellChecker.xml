@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="ThemeHouse_SpellChecker" title="[⌂] Spell Checker" version_string="1.0.0b" version_id="1447261019" url="http://xf.themehouse.io/" install_callback_class="ThemeHouse_Install" install_callback_method="install" uninstall_callback_class="ThemeHouse_Install" uninstall_callback_method="uninstall">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates/>
+  <admin_template_modifications/>
+  <code_events/>
+  <code_event_listeners>
+    <listener event_id="controller_pre_dispatch" execute_order="10" callback_class="ThemeHouse_Listener_ControllerPreDispatch" callback_method="controllerPreDispatch" active="1" hint="" description=""/>
+    <listener event_id="file_health_check" execute_order="10" callback_class="ThemeHouse_SpellChecker_Listener_FileHealthCheck" callback_method="fileHealthCheck" active="1" hint="" description=""/>
+    <listener event_id="init_dependencies" execute_order="10" callback_class="ThemeHouse_Listener_InitDependencies" callback_method="initDependencies" active="1" hint="" description=""/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups>
+    <group group_id="th_spellChecker" display_order="2000" debug_only="0"/>
+    <option option_id="th_spellChecker_languageCode" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value>en</default_value>
+      <edit_format_params/>
+      <sub_options/>
+      <relation group_id="th_spellChecker" display_order="1"/>
+    </option>
+  </optiongroups>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="option_group_th_spellChecker" version_id="1397645199" version_string="1.0.0"><![CDATA[Spell Checker by ThemeHouse]]></phrase>
+    <phrase title="option_group_th_spellChecker_description" version_id="1397645199" version_string="1.0.0"><![CDATA[Options for the Spell Checker by ThemeHouse add-on.]]></phrase>
+    <phrase title="option_th_spellChecker_languageCode" version_id="1397645199" version_string="1.0.0"><![CDATA[Language code]]></phrase>
+    <phrase title="option_th_spellChecker_languageCode_explain" version_id="1397723241" version_string="1.0.0"><![CDATA[The language code should consist of the two letter ISO 639 language code and an optional two letter ISO 3166 country code after a dash or underscore. You must have the appropriate dictionary installed on your server for this to work.]]></phrase>
+    <phrase title="th_add_to_dictionary_spellchecker" version_id="1397665354" version_string="1.0.0"><![CDATA[Add to dictionary]]></phrase>
+    <phrase title="th_check_spelling_spellchecker" version_id="1397665354" version_string="1.0.0"><![CDATA[Check Spelling]]></phrase>
+    <phrase title="th_ignore_all_spellchecker" version_id="1397665354" version_string="1.0.0"><![CDATA[Ignore all]]></phrase>
+    <phrase title="th_ignore_word_spellchecker" version_id="1397665354" version_string="1.0.0"><![CDATA[Ignore word]]></phrase>
+    <phrase title="th_no_suggestions_spellchecker" version_id="1397665354" version_string="1.0.0"><![CDATA[No suggestions]]></phrase>
+  </phrases>
+  <route_prefixes>
+    <route_type type="public">
+      <prefix original_prefix="spell-checker" class="ThemeHouse_SpellChecker_Route_Prefix_SpellChecker" build_link="none"/>
+    </route_type>
+  </route_prefixes>
+  <style_properties/>
+  <templates>
+    <template title="th_jquery_spellchecker.css" version_id="1397665354" version_string="1.0.0"><![CDATA[/*
+ * jQuery Spellchecker - v0.2.4
+ * https://github.com/badsyntax/jquery-spellchecker
+ *
+ * Copyright (c) 2012 Richard Willis
+ * Licensed under the MIT license.
+ */
+.spellchecker-word-highlight {
+  color: red;
+  cursor: pointer;
+  border-bottom: 1px dotted red;
+}
+.spellchecker-incorrectwords {
+  display: none;
+}
+.spellchecker-incorrectwords a {
+  display: inline-block;
+  margin-right: .5em;
+}]]></template>
+    <template title="th_redactor_buttons_spellchecker.css" version_id="1397665354" version_string="1.0.0"><![CDATA[/*
+ * jQuery Spellchecker - v0.2.4
+ * https://github.com/badsyntax/jquery-spellchecker
+ *
+ * Copyright (c) 2012 Richard Willis
+ * Licensed under the MIT license.
+ */
+.spellchecker-suggestbox {
+  position: absolute;
+  display: none;
+  z-index: 9999;
+  overflow: none;
+  font: normal 13px arial;
+  box-shadow: 0 0 4px #aaa;
+  background: #fff;
+  border: 1px solid #bbb;
+}
+.spellchecker-suggestbox .loading {
+  padding: 3px 6px;
+  font-style: italic;
+}
+.spellchecker-suggestbox a {
+  outline: none;
+  cursor: pointer;
+  color: #333;
+  padding: 3px 6px;
+  display: block;
+  text-decoration: none;
+}
+.spellchecker-suggestbox a:hover {
+  color: #000;
+  background: #ddd;
+}
+.spellchecker-suggestbox .footer {
+  border-top: 1px solid #ddd;
+}
+.spellchecker-suggestbox .footer .ignore-all,
+.spellchecker-suggestbox .footer .ignore-forever {
+  display: none;
+}
+html .redactor_toolbar li a.redactor_btn_spellchecker,
+html .redactor_toolbar li a.redactor_btn_spellchecker:hover,
+html .redactor_toolbar li a.redactor_btn_spellchecker:active,
+html .redactor_toolbar li a.redactor_btn_spellchecker.redactor_act
+{
+	background-image: url(styles/default/themehouse/spellchecker/editor/icons.png) !important;
+	background-repeat: no-repeat;
+	background-position: center center;
+}]]></template>
+  </templates>
+  <public_template_modifications>
+    <modification template="footer" modification_key="th_copyrightNotice_spellChecker" description="Copyright notice for [⌂] Spell Checker" execution_order="1" enabled="1" action="callback">
+      <find><![CDATA[/{xen:phrase (?:xenforo|extra)_copyright}/]]></find>
+      <replace><![CDATA[ThemeHouse_Listener_InitDependencies::copyrightNotice]]></replace>
+    </modification>
+    <modification template="editor_contents.css" modification_key="th_editorContents_spellChecker" description="Adds spell checker CSS for Redactor editor." execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#$#]]></find>
+      <replace><![CDATA[<xen:include template="th_jquery_spellchecker.css" />]]></replace>
+    </modification>
+    <modification template="editor_js_setup" modification_key="th_editorJsSetup_spellChecker" description="Adds spell checker to Redactor." execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#$#]]></find>
+      <replace><![CDATA[<xen:require css="th_redactor_buttons_spellchecker.css" />
+<xen:require js="js/themehouse/spellchecker/jquery.spellchecker.js" />
+<xen:require js="js/themehouse/spellchecker/bb_code_edit.js" />
+<script>
+if (typeof RELANG === 'undefined')
+{
+	var RELANG = {};
+}
+
+RELANG.xf.th_check_spelling_spellchecker = "{xen:jsescape {xen:phrase th_check_spelling_spellchecker}}";
+RELANG.xf.th_request_error_spellchecker = "{xen:jsescape {xen:phrase error_occurred_or_request_stopped}}";
+RELANG.xf.th_ignore_word_spellchecker = "{xen:jsescape {xen:phrase th_ignore_word_spellchecker}}";
+RELANG.xf.th_ignore_all_spellchecker = "{xen:jsescape {xen:phrase th_ignore_all_spellchecker}}";
+RELANG.xf.th_add_to_dictionary_spellchecker = "{xen:jsescape {xen:phrase th_add_to_dictionary_spellchecker}}";
+RELANG.xf.th_loading_spellchecker = "{xen:jsescape {xen:phrase loading}}...";
+RELANG.xf.th_no_suggestions_spellchecker = "({xen:jsescape {xen:phrase th_no_suggestions_spellchecker}})";
+
+</script>]]></replace>
+    </modification>
+    <modification template="editor" modification_key="th_editor_spellChecker" description="Adds jQuery data elements to Wysiwyg textarea tag." execution_order="10" enabled="1" action="preg_replace">
+      <find><![CDATA[#(<textarea name="{\$formCtrlNameHtml}"[^>]*)(>)#Us]]></find>
+      <replace><![CDATA[${1} data-spellcheckerpath="{xen:link spell-checker}" data-spellcheckerlang="{$xenOptions.th_spellChecker_languageCode}" ${2}]]></replace>
+    </modification>
+  </public_template_modifications>
+  <bb_code_media_sites/>
+  <bb_codes/>
+</addon>
